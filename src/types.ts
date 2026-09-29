@@ -10,7 +10,8 @@ export type PageView =
   | 'reviews'
   | 'legal'
   | 'admin'
-  | 'reset-password';
+  | 'reset-password'
+  | 'not-found';
 
 export interface ServiceDetail {
   id: string;

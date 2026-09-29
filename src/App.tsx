@@ -18,6 +18,7 @@ import { EmergencyView } from './views/EmergencyView';
 import { LegalView } from './views/LegalView';
 import { AdminView } from './views/AdminView';
 import { ResetPasswordView } from './views/ResetPasswordView';
+import { NotFoundView } from './views/NotFoundView';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<PageView>('home');
