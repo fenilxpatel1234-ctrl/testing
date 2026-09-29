@@ -84,41 +84,44 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-2xl space-y-7">
-          <div className="text-center space-y-3">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-blue-200">
-              <KeyRound className="w-7 h-7" />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[10%] left-[15%] w-[40rem] h-[40rem] bg-blue-300/20 rounded-full mix-blend-multiply filter blur-[100px] opacity-70"></div>
+        <div className="absolute top-[20%] right-[10%] w-[35rem] h-[35rem] bg-indigo-300/20 rounded-full mix-blend-multiply filter blur-[100px] opacity-70"></div>
+        <div className="absolute bottom-[-10%] left-[30%] w-[45rem] h-[45rem] bg-cyan-300/20 rounded-full mix-blend-multiply filter blur-[100px] opacity-70"></div>
+      </div>
+
+      <div className="relative z-10 w-full max-w-lg">
+        <div className="bg-white/80 backdrop-blur-2xl p-10 sm:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white">
+          <div className="text-center mb-10">
+            <div className="w-20 h-20 bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-blue-500/30 transform -rotate-3 hover:rotate-3 transition-transform duration-500 ease-out">
+              <KeyRound className="w-10 h-10 text-white" />
             </div>
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900">Reset Password</h2>
-              <p className="text-sm text-slate-500">Enter the 6-digit code sent to your email</p>
-            </div>
+            <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">Reset Password</h1>
+            <p className="text-slate-500 font-medium text-lg">Enter the 6-digit code sent to your email.</p>
           </div>
 
           {error && (
-            <div className="p-3.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl font-medium flex items-start gap-2.5">
-              <span className="w-4 h-4 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">!</span>
-              {error}
+            <div className="mb-8 p-4 bg-red-50/80 backdrop-blur-sm border border-red-100 rounded-2xl flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">!</div>
+              <p className="text-sm font-medium text-red-800">{error}</p>
             </div>
           )}
+
           {success && (
-            <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl">
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0" />
-                <div>
-                  <p className="text-xs font-bold text-emerald-700">Password Reset Successful!</p>
-                  <p className="text-[11px] text-emerald-500">Redirecting to admin login...</p>
-                </div>
+            <div className="mb-8 p-4 bg-emerald-50/80 backdrop-blur-sm border border-emerald-100 rounded-2xl flex items-center gap-3">
+              <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0" />
+              <div>
+                <p className="text-sm font-bold text-emerald-700">Password Reset Successful!</p>
+                <p className="text-xs text-emerald-600">Redirecting to admin login...</p>
               </div>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-700">Reset Code</label>
-              <div className="flex gap-2 justify-center" onPaste={handleCodePaste}>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2 ml-1 text-center">Reset Code</label>
+              <div className="flex gap-3 justify-center" onPaste={handleCodePaste}>
                 {code.map((digit, i) => (
                   <input
                     key={i}
@@ -129,66 +132,68 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
                     value={digit}
                     onChange={(e) => handleCodeChange(i, e.target.value)}
                     onKeyDown={(e) => handleCodeKeyDown(i, e)}
-                    className="w-11 h-12 text-center bg-white border border-slate-300 rounded-xl text-lg font-bold text-slate-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    className="w-14 h-16 text-center bg-slate-50/50 border-2 border-slate-200 rounded-2xl text-2xl font-bold text-slate-900 outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all duration-300"
                   />
                 ))}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-700">New Password</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  minLength={6}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
-                  placeholder="At least 6 characters"
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+            <div className="space-y-4 pt-4">
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">New Password</label>
+                <div className="relative group">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    minLength={6}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="At least 6 characters"
+                    className="w-full pl-5 pr-12 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all duration-300"
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors">
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-700">Confirm Password</label>
-              <div className="relative">
-                <input
-                  type={showConfirm ? 'text' : 'password'}
-                  required
-                  minLength={6}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
-                  placeholder="Repeat new password"
-                />
-                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                  {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Confirm Password</label>
+                <div className="relative group">
+                  <input
+                    type={showConfirm ? 'text' : 'password'}
+                    required
+                    minLength={6}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Repeat new password"
+                    className="w-full pl-5 pr-12 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all duration-300"
+                  />
+                  <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors">
+                    {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold text-sm shadow-md shadow-blue-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-4 mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl font-bold text-lg shadow-[0_10px_20px_rgb(59,130,246,0.3)] hover:shadow-[0_15px_30px_rgb(59,130,246,0.4)] transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:transform-none disabled:shadow-none"
             >
               {isSubmitting ? (
-                <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Resetting Password...</>
+                <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> Processing...</>
               ) : (
-                <><Lock className="w-4 h-4" /> Reset Password</>
+                <><Lock className="w-5 h-5" /> Confirm Reset</>
               )}
             </button>
 
             <button
               type="button"
               onClick={() => onSelectView('admin')}
-              className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold text-xs transition-all flex items-center justify-center gap-1.5"
+              className="w-full py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold text-sm transition-colors flex items-center justify-center gap-2"
             >
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to Admin Login
+              <ArrowLeft className="w-4 h-4" /> Return to Login
             </button>
           </form>
         </div>
