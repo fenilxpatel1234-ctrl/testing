@@ -360,7 +360,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onSelectView }) => {
     if (showForgotPassword) {
       if (showResetForm) {
         return (
-          <div className="min-h-screen flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2564&auto=format&fit=crop')" }}>
+          <div className="min-h-screen flex items-start justify-center pt-32 sm:pt-40 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-auto bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2564&auto=format&fit=crop')" }}>
             <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
 
             <motion.div 
@@ -442,7 +442,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onSelectView }) => {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2564&auto=format&fit=crop')" }}>
+        <div className="min-h-screen flex items-start justify-center pt-32 sm:pt-40 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-auto bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2564&auto=format&fit=crop')" }}>
           <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
 
           <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="relative z-10 w-full max-w-[440px]">
@@ -496,8 +496,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onSelectView }) => {
     }
 
     return (
-      <div className="min-h-screen flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2564&auto=format&fit=crop')" }}>
-        <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
+      <div className="min-h-screen flex items-start justify-center pt-32 sm:pt-40 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-auto bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundColor: '#ffffff'}}d>        <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
 
         <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="relative z-10 w-full max-w-[440px]">
           <div className="bg-white/85 backdrop-blur-2xl p-10 sm:p-12 rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white/60">

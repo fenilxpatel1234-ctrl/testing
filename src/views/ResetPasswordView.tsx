@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PageView } from '../types';
 import { Lock, ArrowLeft, KeyRound, Eye, EyeOff, CheckCircle2, Mail, AlertCircle, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, color } from 'motion/react';
 
 interface ResetPasswordViewProps {
   onSelectView: (view: PageView) => void;
@@ -85,18 +85,18 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2564&auto=format&fit=crop')" }}>
+    <div className="min-h-screen flex items-start justify-center pt-32 sm:pt-40 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-auto bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundColor: '#ffffff' }}>
       {/* Light overlay to ensure form is readable */}
       <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 w-full max-w-[440px]"
       >
         <div className="bg-white/85 backdrop-blur-2xl p-10 sm:p-12 rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white/60">
-          
+
           <div className="text-center mb-10">
             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-slate-200/50">
               <KeyRound className="w-7 h-7 text-slate-800" />
@@ -107,7 +107,7 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
 
           <AnimatePresence mode="wait">
             {error && (
-              <motion.div 
+              <motion.div
                 key="error"
                 initial={{ opacity: 0, height: 0, scale: 0.9 }}
                 animate={{ opacity: 1, height: 'auto', scale: 1 }}
@@ -120,7 +120,7 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
             )}
 
             {success && (
-              <motion.div 
+              <motion.div
                 key="success"
                 initial={{ opacity: 0, height: 0, scale: 0.9 }}
                 animate={{ opacity: 1, height: 'auto', scale: 1 }}
