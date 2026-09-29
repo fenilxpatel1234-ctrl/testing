@@ -310,7 +310,7 @@ Reply "no" to start over.`);
       const data = await res.json();
 
       if (data.action === 'booking_start') {
-        setBookingStage('firstName');
+        setBookingStage('service');
       }
 
       addAiMsg(data.answer || "Thank you for reaching out! Our team at First Avenue Dentistry is here to help.");
