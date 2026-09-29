@@ -27,10 +27,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectView, onOpenBooking,
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-600 text-xs font-semibold shadow-sm mb-6">
-                <Sparkles className="w-4 h-4" />
-                Welcome to First Avenue Dentistry
-              </div>
 
               <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
                 Join Our Family <br />
