@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+const fs = require('fs');
+const path = require('path');
+
+const content = `import React, { useState, useEffect, useRef } from 'react';
 import { X, CheckCircle2, Calendar, MapPin, Phone, Info, ChevronRight, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Doctor } from '../types';
@@ -73,8 +76,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
 
   const filteredCountries = countrySearch.trim()
     ? COUNTRIES.filter(c => {
-        const cleanSearch = countrySearch.replace(/\D/g, '');
-        const matchesDial = cleanSearch ? c.dial.replace(/\D/g, '').includes(cleanSearch) : false;
+        const cleanSearch = countrySearch.replace(/\\D/g, '');
+        const matchesDial = cleanSearch ? c.dial.replace(/\\D/g, '').includes(cleanSearch) : false;
         const matchesName = c.name.toLowerCase().includes(countrySearch.toLowerCase());
         const matchesCode = c.code.toLowerCase().includes(countrySearch.toLowerCase());
         return matchesName || matchesCode || matchesDial;
@@ -118,7 +121,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
           firstName,
           lastName,
           email: formData.email,
-          phone: `${selectedCountry.dial} ${formData.phone}`,
+          phone: \`\${selectedCountry.dial} \${formData.phone}\`,
           preferredDate: formData.preferredDate,
           preferredTimeSlot: formData.preferredTimeSlot,
           notes: formData.notes,
@@ -251,7 +254,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
                     <select value={doctorPreference} onChange={(e) => setDoctorPreference(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:ring-2 focus:ring-[#0f4c5c]/50 focus:border-[#0f4c5c]">
                       <option value="Any Available">Choose a doctor...</option>
                       {doctors.map(doc => (
-                        <option key={doc.id} value={`${doc.name}${doc.credentials ? `, ${doc.credentials}` : ''}`}>
+                        <option key={doc.id} value={\`\${doc.name}\${doc.credentials ? \`, \${doc.credentials}\` : ''}\`}>
                           {doc.name} — {doc.title}
                         </option>
                       ))}
@@ -330,7 +333,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
                   </div>
 
                   <label className="flex items-center gap-3 cursor-pointer mt-4 group">
-                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${formData.consent ? 'bg-[#0f4c5c] border-[#0f4c5c]' : 'border-slate-300 bg-white group-hover:border-[#0f4c5c]'}`}>
+                    <div className={\`w-5 h-5 rounded border flex items-center justify-center transition-colors \${formData.consent ? 'bg-[#0f4c5c] border-[#0f4c5c]' : 'border-slate-300 bg-white group-hover:border-[#0f4c5c]'}\`}>
                       {formData.consent && <Check className="w-3.5 h-3.5 text-white" />}
                     </div>
                     <input type="checkbox" className="hidden" checked={formData.consent} onChange={(e) => setFormData({ ...formData, consent: e.target.checked })} />
@@ -353,3 +356,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
     </div>
   );
 };
+`;
+
+fs.writeFileSync(path.join(__dirname, 'src', 'components', 'BookingModal.tsx'), content, 'utf8');
+console.log('Successfully replaced BookingModal.tsx with the new 2-column Riverside Family Clinic style UI!');
