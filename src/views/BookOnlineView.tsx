@@ -134,10 +134,7 @@ export const BookOnlineView: React.FC<BookOnlineViewProps> = ({ onSelectView }) 
           <div className="w-full md:w-[35%] bg-[#0f4c5c] text-white p-8 md:p-12 flex flex-col shrink-0">
             <div className="flex items-center gap-3 mb-8">
               <div className="bg-white p-2 rounded-xl">
-                <img src="/logo.png" alt="First Avenue Dentistry" className="h-8 w-auto" />
-              </div>
-              <div>
-                <h1 className="font-bold text-lg leading-tight tracking-tight">First Avenue<br/>Dentistry</h1>
+                <img src="/logo.png" alt="First Avenue Dentistry" className="h-10 w-auto" />
               </div>
             </div>
 

@@ -286,9 +286,10 @@ function emailShell(innerHtml: string): string {
       <td align="center">
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(15,23,42,0.08);">
           <tr>
-            <td style="background:linear-gradient(135deg,#2563eb 0%,#06b6d4 100%);padding:32px 40px;text-align:center;">
-              <div style="font-size:24px;font-weight:800;color:#ffffff;letter-spacing:1px;">FIRST AVENUE<br>DENTISTRY</div>
-              <div style="font-size:12px;color:#e0f2fe;margin-top:6px;letter-spacing:2px;">ST. THOMAS &bull; ONTARIO</div>
+            <td style="background:linear-gradient(135deg,#2563eb 0%,#06b6d4 100%);padding:24px 40px;text-align:center;">
+              <div style="background-color:#ffffff;padding:12px 16px;border-radius:12px;display:inline-block;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+                <img src="${SITE_URL}/logo.png" alt="${CLINIC_NAME}" style="max-height:50px;width:auto;display:block;margin:0;" />
+              </div>
             </td>
           </tr>
           <tr>
