@@ -354,7 +354,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
                 <button type="submit" disabled={isSubmitting || !formData.consent} className="px-8 py-3.5 rounded-full bg-[#0f4c5c] hover:bg-[#155b6d] text-white font-semibold text-sm shadow-md transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
                   {isSubmitting ? <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Processing...</> : <>Request appointment <ChevronRight className="w-4 h-4" /></>}
                 </button>
-                <span className="text-xs text-slate-400">Demo – nothing is sent. For urgent problems call 911.</span>
               </div>
 
             </form>
