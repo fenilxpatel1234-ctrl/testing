@@ -266,6 +266,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
   const [errorMsg, setErrorMsg] = useState('');
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [doctorPreference, setDoctorPreference] = useState('Any Available');
+  const [servicesList, setServicesList] = useState<string[]>([]);
+  const [selectedService, setSelectedService] = useState('General Appointment');
   const phoneInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -277,6 +279,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
       .then(r => r.json())
       .then(data => { if (Array.isArray(data)) setDoctors(data); })
       .catch(() => {});
+      
+    fetch('/api/services')
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setServicesList(data); })
+      .catch(() => {});
   }, []);
 
   if (!isOpen) return null;
@@ -284,11 +291,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
   const selectedCountry = COUNTRIES.find(c => c.code === countryCode) || COUNTRIES.find(c => c.code === 'US')!;
 
   const filteredCountries = countrySearch.trim()
-    ? COUNTRIES.filter(c =>
-        c.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
-        c.code.toLowerCase().includes(countrySearch.toLowerCase()) ||
-        c.dial.includes(countrySearch.replace(/\D/g, ''))
-      )
+    ? COUNTRIES.filter(c => {
+        const cleanSearch = countrySearch.replace(/\D/g, '');
+        const matchesDial = cleanSearch ? c.dial.replace(/\D/g, '').includes(cleanSearch) : false;
+        const matchesName = c.name.toLowerCase().includes(countrySearch.toLowerCase());
+        const matchesCode = c.code.toLowerCase().includes(countrySearch.toLowerCase());
+        return matchesName || matchesCode || matchesDial;
+      })
     : COUNTRIES;
 
   const selectCountry = (code: string) => {
@@ -333,8 +342,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
         body: JSON.stringify({
           ...formData,
           phone: `${selectedCountry.dial} ${formData.phone}`,
-          serviceName: 'General Appointment',
-          serviceId: 'general-checkup',
+          serviceName: selectedService,
+          serviceId: selectedService.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
           doctorPreference,
           insuranceProvider: 'Not Specified',
           isNewPatient: true,
@@ -364,6 +373,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
         </button>
 
         <div className="p-6">
+          <div className="flex items-center gap-3 mb-4 justify-center border-b border-slate-100 pb-4">
+            <img src="/logo.png" alt="First Avenue Dentistry Logo" className="h-10 w-auto" />
+          </div>
           <h2 className="text-xl font-bold text-slate-900 mb-1">Book an Appointment</h2>
           <p className="text-xs text-slate-500 mb-6">Fill in your details and we'll confirm your visit.</p>
 
@@ -383,6 +395,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
               )}
 
               <div className="grid grid-cols-2 gap-3">
+                <div className="col-span-2">
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Service *</label>
+                  <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="General Appointment">General Appointment</option>
+                    {servicesList.filter(s => s !== "General Appointment").map((s, i) => (
+                      <option key={i} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">First Name *</label>
                   <input type="text" required value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:ring-2 focus:ring-blue-500" placeholder="First" />
