@@ -399,9 +399,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Service *</label>
                   <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="General Appointment">General Appointment</option>
-                    {servicesList.filter(s => s !== "General Appointment").map((s, i) => (
-                      <option key={i} value={s}>{s}</option>
-                    ))}
+                    {servicesList.filter(s => {
+                      const name = typeof s === 'string' ? s : (s as any).label || (s as any).name;
+                      return name && name !== "General Appointment";
+                    }).map((s, i) => {
+                      const name = typeof s === 'string' ? s : (s as any).label || (s as any).name;
+                      return <option key={i} value={name}>{name}</option>;
+                    })}
                   </select>
                 </div>
                 <div>
