@@ -89,11 +89,13 @@ export const DentalConciergeAI: React.FC<DentalConciergeAIProps> = ({
   const selectedCountry = COUNTRIES.find(c => c.code === countryCode) || COUNTRIES.find(c => c.code === 'CA')!;
 
   const filteredCountries = countrySearch.trim()
-    ? COUNTRIES.filter(c =>
-        c.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
-        c.code.toLowerCase().includes(countrySearch.toLowerCase()) ||
-        c.dial.includes(countrySearch.replace(/\D/g, ''))
-      )
+    ? COUNTRIES.filter(c => {
+        const cleanSearch = countrySearch.replace(/\D/g, '');
+        const matchesDial = cleanSearch ? c.dial.replace(/\D/g, '').includes(cleanSearch) : false;
+        const matchesName = c.name.toLowerCase().includes(countrySearch.toLowerCase());
+        const matchesCode = c.code.toLowerCase().includes(countrySearch.toLowerCase());
+        return matchesName || matchesCode || matchesDial;
+      })
     : COUNTRIES;
 
   const selectCountry = (code: string) => {
@@ -235,6 +237,7 @@ Is there anything else I can help you with?`);
         setBookingStage('confirm');
         addAiMsg(`Let me confirm your appointment details:
 
+• Service: ${bookingData.serviceName || 'General Consultation'}
 • Name: ${bookingData.firstName} ${bookingData.lastName}
 • Email: ${bookingData.email}
 • Phone: ${bookingData.phone}
@@ -242,10 +245,14 @@ Is there anything else I can help you with?`);
 • Time: ${value === 'none' ? bookingData.time : bookingData.time}
 ${value !== 'none' ? `• Notes: ${value}` : ''}
 
-Does everything look correct? Reply "yes" to submit or "no" to start over.`);
+Does everything look correct? 
+Reply "yes" to submit.
+Reply "edit [field]" to change something (e.g. "edit time", "change service").
+Reply "no" to start over.`);
         return true;
 
-              const v = value.toLowerCase().trim();
+      case 'confirm':
+        const v = value.toLowerCase().trim();
         if (['yes', 'yep', 'correct', 'sure', 'yeah'].includes(v)) {
           submitBooking();
         } else if (v.includes('no ') || v === 'no' || v.includes('change') || v.includes('edit') || v.includes('update')) {
