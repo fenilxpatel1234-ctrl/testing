@@ -52,9 +52,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ onSelectView, onOpenBooking 
     <div className="pt-28 pb-20 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-600 text-xs font-semibold">
-          <Sparkles className="w-4 h-4" /> Our Blog
-        </div>
+        
         <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">Dental Health & Wellness Blog</h1>
         <p className="text-slate-600 text-base leading-relaxed">Stay informed with the latest tips, insights, and news about your dental health.</p>
       </div>

@@ -41,9 +41,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
 
       <div className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-xl grid grid-cols-1 lg:grid-cols-2">
         <div className="p-8 sm:p-12 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" /> {service.title}
-          </div>
+          
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             {service.title}
           </h1>

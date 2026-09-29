@@ -13,9 +13,7 @@ export const OurTeamView: React.FC<OurTeamViewProps> = ({ onSelectView, onOpenBo
     <div className="pt-28 pb-20 space-y-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-600 text-xs font-semibold">
-          <Sparkles className="w-4 h-4" /> About Our First Avenue Dentistry
-        </div>
+        
         <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
           Welcome to First Avenue Family Dentistry
         </h1>
