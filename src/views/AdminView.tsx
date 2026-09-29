@@ -80,6 +80,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ onSelectView }) => {
 
   // Doctors management
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [services, setServices] = useState<string[]>([]);
+  const [newService, setNewService] = useState('');
   const [showAddDoctor, setShowAddDoctor] = useState(false);
   const [editingDoctor, setEditingDoctor] = useState<Doctor | null>(null);
   const [newDoctor, setNewDoctor] = useState({ name: '', title: '', credentials: '', bio: '', image: '' });
@@ -146,6 +148,14 @@ export const AdminView: React.FC<AdminViewProps> = ({ onSelectView }) => {
     } catch {}
   };
 
+  const fetchServices = async () => {
+    try {
+      const res = await fetch('/api/services');
+      const data = await res.json();
+      if (Array.isArray(data)) setServices(data);
+    } catch {}
+  };
+
   const fetchReviews = async () => {
     try {
       const res = await fetch('/api/reviews');
@@ -172,6 +182,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onSelectView }) => {
       fetchMessages();
       fetchAdmins();
       fetchDoctors();
+      fetchServices();
       fetchReviews();
     }
   }, [isLoggedIn]);

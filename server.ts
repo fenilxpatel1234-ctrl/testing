@@ -66,6 +66,7 @@ const MESSAGES_FILE = path.join(DATA_DIR, 'messages.json');
 const ADMINS_FILE = path.join(DATA_DIR, 'admins.json');
 const DOCTORS_FILE = path.join(DATA_DIR, 'doctors.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
+const SERVICES_FILE = path.join(DATA_DIR, 'services.json');
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -94,6 +95,7 @@ let appointmentDatabase: AppointmentRequest[] = loadJSON(APPOINTMENTS_FILE, [], 
 let messageDatabase: PatientMessage[] = loadJSON(MESSAGES_FILE, [], path.join(SEEDS_DIR, 'messages.json'));
 let doctorDatabase: Doctor[] = loadJSON(DOCTORS_FILE, [], path.join(SEEDS_DIR, 'doctors.json'));
 let reviewDatabase: SiteReview[] = loadJSON(REVIEWS_FILE, [], path.join(SEEDS_DIR, 'reviews.json'));
+let servicesDatabase: string[] = [];
 
 if (doctorDatabase.length === 0) {
   doctorDatabase = [
@@ -130,6 +132,7 @@ function persistMessages() { saveJSON(MESSAGES_FILE, messageDatabase); fbSet('me
 function persistAdmins() { saveJSON(ADMINS_FILE, adminDatabase); fbSet('admins', adminDatabase); }
 function persistDoctors() { saveJSON(DOCTORS_FILE, doctorDatabase); fbSet('doctors', doctorDatabase); }
 function persistReviews() { saveJSON(REVIEWS_FILE, reviewDatabase); fbSet('reviews', reviewDatabase); }
+function persistServices() { saveJSON(SERVICES_FILE, servicesDatabase); fbSet('services', servicesDatabase); }
 
 // --- Admin auth: password hashing, httpOnly sessions, brute-force protection ---
 function hashPassword(password: string): string {
@@ -906,6 +909,19 @@ app.get('/api/contact', requireAdmin, (req: Request, res: Response) => {
 });
 
 // --- Doctors CRUD ---
+
+app.get('/api/services', (req: Request, res: Response) => {
+  res.json(servicesDatabase);
+});
+
+app.post('/api/services', requireAdmin, (req: Request, res: Response) => {
+  const { services } = req.body;
+  if (!Array.isArray(services)) return res.status(400).json({ error: 'Invalid services array' });
+  servicesDatabase = services;
+  persistServices();
+  res.json({ success: true });
+});
+
 app.get('/api/doctors', (req: Request, res: Response) => {
   res.json(doctorDatabase);
 });
@@ -1358,6 +1374,18 @@ async function hydrateFromFirebase(): Promise<void> {
   }
 
   // Reviews
+  
+  const fbServices = await fbGet<string[]>('services');
+  servicesDatabase = loadJSON<string>(SERVICES_FILE, [], undefined);
+  if (Array.isArray(fbServices) && fbServices.length > 0) {
+    servicesDatabase = fbServices;
+    saveJSON(SERVICES_FILE, servicesDatabase);
+  } else if (servicesDatabase.length === 0) {
+    servicesDatabase = ["General Appointment","Crowns & Bridges","Wisdom Teeth Extraction","Oral Surgery","Teeth Cleaning","Root Canals","Orthodontics","Sedation Sleep Dentistry","Children's Dentistry","Veneers","Teeth Whitening","Implant","Oral Cancer Screening"];
+    saveJSON(SERVICES_FILE, servicesDatabase);
+    await fbSet('services', servicesDatabase);
+  }
+
   const fbReviews = await fbGet<SiteReview[]>('reviews');
   if (Array.isArray(fbReviews)) {
     reviewDatabase = fbReviews;

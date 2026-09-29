@@ -45,7 +45,7 @@ export const DentalConciergeAI: React.FC<DentalConciergeAIProps> = ({
     {
       id: 'msg-1',
       sender: 'ai',
-      text: "Hello! I am the First Avenue AI assistant. Ask me anything about our dental services, appointment scheduling, or general dental care!"
+      text: "Welcome to First Avenue Dentistry! I'm your dedicated dental concierge. How may I assist you today? Whether you need to book an appointment, inquire about our services, or have a dental concern, I'm here to provide a premium experience."
     }
   ]);
   const [input, setInput] = useState('');
