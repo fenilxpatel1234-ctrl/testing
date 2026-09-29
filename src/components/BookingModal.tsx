@@ -52,6 +52,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pre
   const phoneInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (isOpen && preselectedServiceId && servicesList.length > 0) {
+      const match = servicesList.find(s => {
+        if (typeof s === 'object') return (s as any).id === preselectedServiceId;
+        return typeof s === 'string' && s.toLowerCase().replace(/[^a-z0-9]+/g, '-') === preselectedServiceId;
+      });
+      if (match) {
+        setSelectedService(typeof match === 'string' ? match : (match as any).label || (match as any).name);
+      }
+    } else if (isOpen && !preselectedServiceId && selectedService === 'General Appointment') {
+        setSelectedService('General Appointment');
+    }
+  }, [preselectedServiceId, servicesList, isOpen]);
+
+  useEffect(() => {
     detectCountryCode().then(code => setCountryCode(code));
   }, []);
 

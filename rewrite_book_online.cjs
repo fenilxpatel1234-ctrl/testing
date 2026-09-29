@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+const fs = require('fs');
+const path = require('path');
+
+const content = `import React, { useState, useEffect, useRef } from 'react';
 import { CheckCircle2, Calendar, MapPin, Phone, Check, ChevronRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PageView, Doctor } from '../types';
@@ -53,8 +56,8 @@ export const BookOnlineView: React.FC<BookOnlineViewProps> = ({ onSelectView }) 
 
   const filteredCountries = countrySearch.trim()
     ? COUNTRIES.filter(c => {
-        const cleanSearch = countrySearch.replace(/\D/g, '');
-        const matchesDial = cleanSearch ? c.dial.replace(/\D/g, '').includes(cleanSearch) : false;
+        const cleanSearch = countrySearch.replace(/\\D/g, '');
+        const matchesDial = cleanSearch ? c.dial.replace(/\\D/g, '').includes(cleanSearch) : false;
         const matchesName = c.name.toLowerCase().includes(countrySearch.toLowerCase());
         const matchesCode = c.code.toLowerCase().includes(countrySearch.toLowerCase());
         return matchesName || matchesCode || matchesDial;
@@ -97,7 +100,7 @@ export const BookOnlineView: React.FC<BookOnlineViewProps> = ({ onSelectView }) 
           firstName,
           lastName,
           email: formData.email,
-          phone: `${selectedCountry.dial} ${formData.phone}`,
+          phone: \`\${selectedCountry.dial} \${formData.phone}\`,
           preferredDate: formData.preferredDate,
           preferredTimeSlot: formData.preferredTimeSlot,
           notes: formData.notes,
@@ -227,7 +230,7 @@ export const BookOnlineView: React.FC<BookOnlineViewProps> = ({ onSelectView }) 
                       <select value={doctorPreference} onChange={(e) => setDoctorPreference(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:ring-2 focus:ring-[#0f4c5c]/50 focus:border-[#0f4c5c] focus:bg-white transition-colors">
                         <option value="Any Available">Choose a doctor...</option>
                         {doctors.map(doc => (
-                          <option key={doc.id} value={`${doc.name}${doc.credentials ? `, ${doc.credentials}` : ''}`}>
+                          <option key={doc.id} value={\`\${doc.name}\${doc.credentials ? \`, \${doc.credentials}\` : ''}\`}>
                             {doc.name} — {doc.title}
                           </option>
                         ))}
@@ -306,7 +309,7 @@ export const BookOnlineView: React.FC<BookOnlineViewProps> = ({ onSelectView }) 
                     </div>
 
                     <label className="flex items-center gap-3 cursor-pointer mt-6 group">
-                      <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${formData.consent ? 'bg-[#0f4c5c] border-[#0f4c5c]' : 'border-slate-300 bg-slate-50 group-hover:border-[#0f4c5c]'}`}>
+                      <div className={\`w-5 h-5 rounded border flex items-center justify-center transition-colors \${formData.consent ? 'bg-[#0f4c5c] border-[#0f4c5c]' : 'border-slate-300 bg-slate-50 group-hover:border-[#0f4c5c]'}\`}>
                         {formData.consent && <Check className="w-3.5 h-3.5 text-white" />}
                       </div>
                       <input type="checkbox" className="hidden" checked={formData.consent} onChange={(e) => setFormData({ ...formData, consent: e.target.checked })} />
@@ -330,3 +333,7 @@ export const BookOnlineView: React.FC<BookOnlineViewProps> = ({ onSelectView }) 
     </div>
   );
 };
+`;
+
+fs.writeFileSync(path.join(__dirname, 'src', 'views', 'BookOnlineView.tsx'), content, 'utf8');
+console.log('Successfully replaced BookOnlineView.tsx with the beautiful 2-column layout!');
