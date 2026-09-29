@@ -86,8 +86,6 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
 
   return (
     <div className="min-h-screen flex items-start justify-center pt-32 sm:pt-40 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-auto bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundColor: '#ffffff' }}>
-      {/* Light overlay to ensure form is readable */}
-      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
 
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -95,7 +93,7 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 w-full max-w-[440px]"
       >
-        <div className="bg-white/85 backdrop-blur-2xl p-10 sm:p-12 rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white/60">
+        <div className="bg-white p-10 sm:p-12 rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white/60">
 
           <div className="text-center mb-10">
             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-slate-200/50">
