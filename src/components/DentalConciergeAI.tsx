@@ -17,6 +17,7 @@ interface Message {
 
 type BookingStage =
   | null
+  | 'service'
   | 'firstName'
   | 'lastName'
   | 'email'
@@ -27,6 +28,7 @@ type BookingStage =
   | 'confirm';
 
 interface BookingData {
+  serviceName: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -41,6 +43,15 @@ export const DentalConciergeAI: React.FC<DentalConciergeAIProps> = ({
   onClose,
   onOpenBooking
 }) => {
+  const [servicesList, setServicesList] = useState<string[]>([]);
+  
+  useEffect(() => {
+    fetch('/api/services')
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setServicesList(data); })
+      .catch(() => {});
+  }, []);
+  
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'msg-1',
@@ -52,7 +63,7 @@ export const DentalConciergeAI: React.FC<DentalConciergeAIProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [bookingStage, setBookingStage] = useState<BookingStage>(null);
   const [bookingData, setBookingData] = useState<BookingData>({
-    firstName: '', lastName: '', email: '', phone: '', date: '', time: '', notes: ''
+    serviceName: '', firstName: '', lastName: '', email: '', phone: '', date: '', time: '', notes: ''
   });
   const [countryCode, setCountryCode] = useState('US');
   const [countrySearch, setCountrySearch] = useState('');
@@ -117,6 +128,9 @@ export const DentalConciergeAI: React.FC<DentalConciergeAIProps> = ({
         body: JSON.stringify({
           firstName: bookingData.firstName,
           lastName: bookingData.lastName,
+          serviceName: bookingData.serviceName || 'General Consultation',
+          serviceId: (bookingData.serviceName || 'general-consultation').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          doctorPreference: 'Any Available',
           email: bookingData.email,
           phone: bookingData.phone,
           preferredDate: bookingData.date,
@@ -129,6 +143,7 @@ export const DentalConciergeAI: React.FC<DentalConciergeAIProps> = ({
         addAiMsg(`Wonderful! Your appointment request has been submitted successfully! 🎉
 
 Here's a summary:
+• Service: ${bookingData.serviceName || 'General Consultation'}
 • Name: ${bookingData.firstName} ${bookingData.lastName}
 • Email: ${bookingData.email}
 • Phone: ${bookingData.phone}
@@ -147,7 +162,7 @@ Is there anything else I can help you with?`);
     } finally {
       setIsLoading(false);
       setBookingStage(null);
-      setBookingData({ firstName: '', lastName: '', email: '', phone: '', date: '', time: '', notes: '' });
+      setBookingData({ serviceName: '', firstName: '', lastName: '', email: '', phone: '', date: '', time: '', notes: '' });
     }
   };
 
@@ -155,6 +170,13 @@ Is there anything else I can help you with?`);
     if (!bookingStage) return false;
 
     switch (bookingStage) {
+            case 'service':
+        setBookingData(prev => ({ ...prev, serviceName: value }));
+        setBookingStage('firstName');
+        addAiMsg(`Got it, ${value}. Now, what's your first name?`);
+        return true;
+        
+      
       case 'firstName':
         setBookingData(prev => ({ ...prev, firstName: value }));
         setBookingStage('lastName');
@@ -223,13 +245,29 @@ ${value !== 'none' ? `• Notes: ${value}` : ''}
 Does everything look correct? Reply "yes" to submit or "no" to start over.`);
         return true;
 
-      case 'confirm':
-        if (value.toLowerCase() === 'yes' || value.toLowerCase() === 'yep' || value.toLowerCase() === 'correct') {
+              const v = value.toLowerCase().trim();
+        if (['yes', 'yep', 'correct', 'sure', 'yeah'].includes(v)) {
           submitBooking();
+        } else if (v.includes('no ') || v === 'no' || v.includes('change') || v.includes('edit') || v.includes('update')) {
+          if (v.includes('service')) {
+            setBookingStage('service'); addAiMsg("Let's change the service. What service do you need?");
+          } else if (v.includes('name')) {
+            setBookingStage('firstName'); addAiMsg("Let's update your name. What is your first name?");
+          } else if (v.includes('email')) {
+            setBookingStage('email'); addAiMsg("Let's update your email. What is your correct email address?");
+          } else if (v.includes('phone') || v.includes('number')) {
+            setBookingStage('phone'); addAiMsg("Let's update your phone. Please choose the country code and type the number.");
+          } else if (v.includes('date') || v.includes('day')) {
+            setBookingStage('date'); addAiMsg("Let's update your date. What new date do you prefer?");
+          } else if (v.includes('time')) {
+            setBookingStage('time'); addAiMsg("Let's update your time. What new time do you prefer?");
+          } else if (v.includes('note')) {
+            setBookingStage('notes'); addAiMsg("Let's update your notes. What would you like to add?");
+          } else {
+            addAiMsg("What would you like to change? (e.g. 'edit time', 'change date', 'edit email', 'change service')");
+          }
         } else {
-          setBookingStage('firstName');
-          setBookingData({ firstName: '', lastName: '', email: '', phone: '', date: '', time: '', notes: '' });
-          addAiMsg("No problem! Let's start over. What's your first name?");
+          addAiMsg("I didn't quite catch that. Please say 'yes' to submit, or 'edit [field]' to change something (e.g. 'edit date').");
         }
         return true;
     }
@@ -352,6 +390,30 @@ Does everything look correct? Reply "yes" to submit or "no" to start over.`);
               What services do you offer?
             </button>
           </div>
+        </div>
+      )}
+
+            {bookingStage === 'service' && servicesList.length > 0 && (
+        <div className="px-4 py-3 bg-slate-100/70 border-t border-slate-200 space-y-2">
+          <p className="text-[10px] uppercase font-semibold text-slate-400">Available Services</p>
+          <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1">
+            {servicesList.map((s, i) => {
+              const name = typeof s === 'string' ? s : (s as any).label || (s as any).name;
+              return (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setInput(name);
+                    chatInputRef.current?.focus();
+                  }}
+                  className="text-[10px] text-blue-600 bg-white px-2.5 py-1.5 rounded-full border border-slate-200 hover:bg-blue-50 transition-colors text-left"
+                >
+                  {name}
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-[9px] text-slate-400">Tap a service above or type your own.</p>
         </div>
       )}
 

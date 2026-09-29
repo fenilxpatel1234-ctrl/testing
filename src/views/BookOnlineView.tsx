@@ -126,7 +126,7 @@ export const BookOnlineView: React.FC<BookOnlineViewProps> = ({ onSelectView }) 
   };
 
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-slate-50 min-h-screen">
+    <div className="pt-36 pb-20 px-4 sm:px-6 lg:px-8 bg-slate-50 min-h-screen">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-[24px] shadow-2xl flex flex-col md:flex-row overflow-hidden border border-slate-200">
           
