@@ -3,6 +3,7 @@ import { PageView } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
+import { EmergencyBookingModal } from './components/EmergencyBookingModal';
 import { DentalConciergeAI } from './components/DentalConciergeAI';
 import { CookieConsent } from './components/CookieConsent';
 
@@ -152,12 +153,21 @@ export default function App() {
         onOpenBooking={() => handleOpenBooking()}
       />
 
-      <BookingModal
-        isOpen={bookingModalOpen}
-        onClose={() => setBookingModalOpen(false)}
-        preselectedServiceId={selectedServiceId}
-        isEmergency={isEmergencyBooking}
-      />
+      {isEmergencyBooking ? (
+        <EmergencyBookingModal
+          isOpen={bookingModalOpen}
+          onClose={() => setBookingModalOpen(false)}
+          preselectedServiceId={selectedServiceId}
+          isEmergency={true}
+        />
+      ) : (
+        <BookingModal
+          isOpen={bookingModalOpen}
+          onClose={() => setBookingModalOpen(false)}
+          preselectedServiceId={selectedServiceId}
+          isEmergency={false}
+        />
+      )}
 
       <DentalConciergeAI
         isOpen={aiDrawerOpen}
