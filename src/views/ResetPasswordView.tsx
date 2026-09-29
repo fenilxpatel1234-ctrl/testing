@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageView } from '../types';
-import { Lock, ShieldCheck, ArrowLeft, KeyRound, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
+import { Lock, ArrowLeft, KeyRound, Eye, EyeOff, CheckCircle2, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface ResetPasswordViewProps {
@@ -84,77 +84,26 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        duration: 0.6, 
-        ease: "easeOut",
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-  };
-
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      
-      {/* Animated Background Orbs */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <motion.div 
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-            rotate: [0, 90, 0]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[-10%] left-[-10%] w-[50rem] h-[50rem] bg-indigo-500/20 rounded-full mix-blend-screen filter blur-[100px]" 
-        />
-        <motion.div 
-          animate={{
-            scale: [1, 1.5, 1],
-            opacity: [0.2, 0.4, 0.2],
-            x: [0, 100, 0]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] right-[-20%] w-[40rem] h-[40rem] bg-fuchsia-500/20 rounded-full mix-blend-screen filter blur-[100px]" 
-        />
-        <motion.div 
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.6, 0.3],
-            y: [0, -50, 0]
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-10%] left-[20%] w-[45rem] h-[45rem] bg-blue-500/20 rounded-full mix-blend-screen filter blur-[120px]" 
-        />
-      </div>
+    <div className="min-h-screen flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=2564&auto=format&fit=crop')" }}>
+      {/* Light overlay to ensure form is readable */}
+      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
 
       <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 w-full max-w-lg"
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full max-w-[440px]"
       >
-        <div className="bg-slate-800/60 backdrop-blur-3xl p-10 sm:p-12 rounded-[2.5rem] shadow-[0_8px_40px_rgb(0,0,0,0.5)] border border-slate-700/50">
+        <div className="bg-white/85 backdrop-blur-2xl p-10 sm:p-12 rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white/60">
           
-          <motion.div variants={itemVariants} className="text-center mb-10">
-            <motion.div 
-              whileHover={{ rotate: 180, scale: 1.1 }}
-              transition={{ duration: 0.6, type: "spring" }}
-              className="w-20 h-20 bg-gradient-to-tr from-indigo-500 via-purple-500 to-blue-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-indigo-500/30"
-            >
-              <KeyRound className="w-10 h-10 text-white" />
-            </motion.div>
-            <h1 className="text-4xl font-extrabold text-white tracking-tight mb-3">Reset Password</h1>
-            <p className="text-slate-400 font-medium text-lg">Enter the 6-digit code sent to your email.</p>
-          </motion.div>
+          <div className="text-center mb-10">
+            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-slate-200/50">
+              <KeyRound className="w-7 h-7 text-slate-800" />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">Create new password</h1>
+            <p className="text-slate-500 text-sm">Enter the 6-digit code sent to your email.</p>
+          </div>
 
           <AnimatePresence mode="wait">
             {error && (
@@ -163,10 +112,10 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
                 initial={{ opacity: 0, height: 0, scale: 0.9 }}
                 animate={{ opacity: 1, height: 'auto', scale: 1 }}
                 exit={{ opacity: 0, height: 0, scale: 0.9 }}
-                className="mb-8 p-4 bg-red-900/40 backdrop-blur-md border border-red-500/50 rounded-2xl flex items-start gap-3"
+                className="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3"
               >
-                <div className="w-6 h-6 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">!</div>
-                <p className="text-sm font-medium text-red-200">{error}</p>
+                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                <p className="text-sm font-medium text-red-800">{error}</p>
               </motion.div>
             )}
 
@@ -176,25 +125,23 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
                 initial={{ opacity: 0, height: 0, scale: 0.9 }}
                 animate={{ opacity: 1, height: 'auto', scale: 1 }}
                 exit={{ opacity: 0, height: 0, scale: 0.9 }}
-                className="mb-8 p-4 bg-emerald-900/40 backdrop-blur-md border border-emerald-500/50 rounded-2xl flex items-center gap-3"
+                className="mb-8 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center gap-3"
               >
-                <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0" />
                 <div>
-                  <p className="text-sm font-bold text-emerald-200">Password Reset Successful!</p>
-                  <p className="text-xs text-emerald-400">Redirecting to admin login...</p>
+                  <p className="text-sm font-bold text-emerald-800">Password Reset Successful!</p>
+                  <p className="text-xs text-emerald-600">Redirecting to login...</p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <motion.div variants={itemVariants}>
-              <label className="block text-sm font-bold text-slate-300 mb-4 text-center tracking-wider uppercase">Security Code</label>
-              <div className="flex gap-2 sm:gap-3 justify-center" onPaste={handleCodePaste}>
+            <div>
+              <div className="flex gap-2 sm:gap-3 justify-center mb-6" onPaste={handleCodePaste}>
                 {code.map((digit, i) => (
-                  <motion.input
+                  <input
                     key={i}
-                    whileFocus={{ scale: 1.1, y: -5 }}
                     id={`code-${i}`}
                     type="text"
                     inputMode="numeric"
@@ -202,77 +149,74 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = ({ onSelectVi
                     value={digit}
                     onChange={(e) => handleCodeChange(i, e.target.value)}
                     onKeyDown={(e) => handleCodeKeyDown(i, e)}
-                    className="w-12 h-14 sm:w-14 sm:h-16 text-center bg-slate-900/50 border-2 border-slate-700 rounded-2xl text-2xl font-bold text-white outline-none focus:ring-4 focus:ring-indigo-500/40 focus:border-indigo-400 focus:bg-slate-800 transition-colors duration-300 shadow-inner"
+                    placeholder="-"
+                    className="w-12 h-14 sm:w-14 sm:h-16 text-center bg-slate-100/80 border border-transparent rounded-2xl text-xl font-bold text-slate-900 outline-none focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100 transition-all duration-300 placeholder-slate-300"
                   />
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div variants={itemVariants} className="space-y-5 pt-6">
-              <div>
-                <label className="block text-sm font-bold text-slate-300 mb-2 ml-1">New Password</label>
-                <div className="relative group">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    minLength={6}
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="At least 6 characters"
-                    className="w-full pl-5 pr-12 py-4 bg-slate-900/50 border-2 border-slate-700 rounded-2xl text-base text-white placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/40 focus:border-indigo-400 focus:bg-slate-800 transition-all duration-300 shadow-inner"
-                  />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-indigo-400 transition-colors">
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
+            <div className="space-y-4">
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-600 transition-colors">
+                  <Lock className="h-5 w-5" />
                 </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  minLength={6}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="New password"
+                  className="w-full pl-11 pr-12 py-4 bg-slate-100/80 border border-transparent rounded-2xl text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100 transition-all duration-300"
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
 
-              <div>
-                <label className="block text-sm font-bold text-slate-300 mb-2 ml-1">Confirm Password</label>
-                <div className="relative group">
-                  <input
-                    type={showConfirm ? 'text' : 'password'}
-                    required
-                    minLength={6}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Repeat new password"
-                    className="w-full pl-5 pr-12 py-4 bg-slate-900/50 border-2 border-slate-700 rounded-2xl text-base text-white placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/40 focus:border-indigo-400 focus:bg-slate-800 transition-all duration-300 shadow-inner"
-                  />
-                  <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-indigo-400 transition-colors">
-                    {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-600 transition-colors">
+                  <Lock className="h-5 w-5" />
                 </div>
+                <input
+                  type={showConfirm ? 'text' : 'password'}
+                  required
+                  minLength={6}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm password"
+                  className="w-full pl-11 pr-12 py-4 bg-slate-100/80 border border-transparent rounded-2xl text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100 transition-all duration-300"
+                />
+                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                  {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div variants={itemVariants}>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+            <div className="pt-2">
+              <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 mt-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 hover:from-indigo-400 hover:via-purple-400 hover:to-indigo-500 text-white rounded-2xl font-bold text-lg shadow-[0_10px_30px_rgb(99,102,241,0.4)] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:pointer-events-none"
+                className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-semibold text-sm shadow-xl shadow-slate-900/10 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:pointer-events-none transform active:scale-[0.98]"
               >
                 {isSubmitting ? (
-                  <><motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></motion.span> Processing...</>
+                  <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> Processing...</>
                 ) : (
-                  <><Lock className="w-5 h-5" /> Confirm Reset</>
+                  'Reset Password'
                 )}
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
 
-            <motion.div variants={itemVariants}>
-              <motion.button
-                whileHover={{ scale: 1.02, backgroundColor: 'rgba(51, 65, 85, 0.8)' }}
-                whileTap={{ scale: 0.98 }}
+            <div className="text-center pt-2">
+              <button
                 type="button"
                 onClick={() => onSelectView('admin')}
-                className="w-full py-4 bg-slate-800 text-slate-300 border border-slate-700 rounded-2xl font-bold text-sm transition-colors flex items-center justify-center gap-2"
+                className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors flex items-center justify-center gap-1 mx-auto"
               >
-                <ArrowLeft className="w-4 h-4" /> Return to Login
-              </motion.button>
-            </motion.div>
+                <ArrowLeft className="w-4 h-4" /> Back to Login
+              </button>
+            </div>
           </form>
         </div>
       </motion.div>
